@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+    <item android:drawable="@drawable/aga_milosz" android:duration="100" />
+    <item android:drawable="@drawable/deszcz_milosz" android:duration="100" />
+    <item android:drawable="@drawable/jak_robi_kotek" android:duration="100" />
+    <item android:drawable="@drawable/jak_robi_mucha" android:duration="100" />
+    <item android:drawable="@drawable/jak_robi_piesek" android:duration="100" />
+    <item android:drawable="@drawable/niebo_milosz" android:duration="100" />
+    <item android:drawable="@drawable/zegar_na_wiezy_koscielnej" android:duration="100" />
+    <item android:drawable="@drawable/trzy" android:duration="100" />
+    <item android:drawable="@drawable/dwa" android:duration="100" />
+    <item android:drawable="@drawable/raz" android:duration="100" />
+</animation-list>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="pl.nazwa.phpiotr.milosz.MiloszActivity"
+        tools:showIn="@layout/activity_milosz">
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/raz_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/raz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/raz" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/dwa_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/dwa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/dwa" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/trzy_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/trzy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/trzy" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/aga_milosz_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/aga_milosz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/aga_milosz" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/deszcz_milosz_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/deszcz_milosz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/deszcz_milosz" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/jak_robi_kotek_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/jak_robi_kotek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/jak_robi_kotek" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/jak_robi_mucha_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/jak_robi_mucha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/jak_robi_mucha" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/jak_robi_piesek_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/jak_robi_piesek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/jak_robi_piesek" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/niebo_milosz_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/niebo_milosz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/niebo_milosz" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <SeekBar
+                android:id="@+id/zegar_na_wiezy_koscielnej_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/zegar_na_wiezy_koscielnej"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/zegar_na_wiezy_koscielnej" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>
