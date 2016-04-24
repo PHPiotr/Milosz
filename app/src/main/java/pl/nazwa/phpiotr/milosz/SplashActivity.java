@@ -12,8 +12,7 @@ import java.util.Random;
 
 public class SplashActivity extends AppCompatActivity {
 
-    MediaPlayer splashSound;
-    Thread thread;
+    MediaPlayer splashSound = null;
     long splashDuration = 0;
     int splashIndex = 0;
 
@@ -47,22 +46,16 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         Random ran = new Random();
         splashIndex = ran.nextInt(mp3.length);
-
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                splashSound = MediaPlayer.create(SplashActivity.this, mp3[splashIndex]);
-                splashDuration = splashSound.getDuration();
-                splashSound.start();
-            }
-        });
-
-        thread.start();
+        splashSound = MediaPlayer.create(SplashActivity.this, mp3[splashIndex]);
+        splashDuration = splashSound.getDuration();
+        splashSound.start();
 
         ImageView animated = (ImageView) findViewById(R.id.animatedSplash);
-        animated.setBackgroundResource(R.drawable.animated);
-        AnimationDrawable animationDrawable = (AnimationDrawable) animated.getBackground();
-        animationDrawable.start();
+        if (animated != null) {
+            animated.setBackgroundResource(R.drawable.animated);
+            AnimationDrawable animationDrawable = (AnimationDrawable) animated.getBackground();
+            animationDrawable.start();
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -73,7 +66,6 @@ public class SplashActivity extends AppCompatActivity {
                 splashSound.reset();
                 splashSound.release();
                 splashSound = null;
-                thread.interrupt();
                 SplashActivity.this.finish();
             }
         }, splashDuration);
