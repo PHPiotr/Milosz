@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-public class MiloszActivity extends AppCompatActivity implements View.OnClickListener {
+public class MiloszActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private Thread threadInClick = null;
     private MediaPlayer mediaPlayerInClick = null;
@@ -26,19 +26,6 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
             R.raw.raz,
             R.raw.trzy,
             R.raw.zegar_na_wiezy_koscielnej,
-    };
-
-    private int[] png = {
-            R.drawable.aga_milosz,
-            R.drawable.deszcz_milosz,
-            R.drawable.dwa,
-            R.drawable.jak_robi_kotek,
-            R.drawable.jak_robi_mucha,
-            R.drawable.jak_robi_piesek,
-            R.drawable.niebo_milosz,
-            R.drawable.raz,
-            R.drawable.trzy,
-            R.drawable.zegar_na_wiezy_koscielnej,
     };
 
     private int[] ids = {
@@ -72,8 +59,11 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_milosz);
 
-        for (int i = 0; i < ids.length; i++) {
-            ((ImageButton) findViewById(ids[i])).setOnClickListener(this);
+        for (int id : ids) {
+            ImageButton imageButton = (ImageButton) findViewById(id);
+            if (imageButton != null) {
+                imageButton.setOnClickListener(this);
+            }
         }
 
     }
@@ -101,7 +91,9 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
                 final int seekId = seekIds[i];
                 mediaPlayerInClick = MediaPlayer.create(MiloszActivity.this, soundId);
                 seekBar = (SeekBar) findViewById(seekId);
-                seekBar.setMax(mediaPlayerInClick.getDuration());
+                if (seekBar != null) {
+                    seekBar.setMax(mediaPlayerInClick.getDuration());
+                }
                 mediaPlayerInClick.start();
 
                 handler = new Handler();
@@ -121,5 +113,20 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }
