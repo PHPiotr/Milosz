@@ -14,10 +14,7 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
     private final String TAG = this.getClass().getSimpleName();
     private Thread threadInClick = null;
     private Thread threadInSeek = null;
-    private MediaPlayer mediaPlayerInClick = null;
-    private MediaPlayer mediaPlayerInSeek = null;
     private SeekBar seekbars[] = new SeekBar[COUNT];
-    private ImageButton buttons[] = new ImageButton[COUNT];
     private MediaPlayer players[] = new MediaPlayer[COUNT];
     private Handler clickHandler = null;
     private Handler seekHandler = null;
@@ -165,11 +162,10 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
-        if (isSeeked && players[currentSeekBarIndex] != null && playerProgress != -1 && !players[currentSeekBarIndex].isPlaying()) {
-            mediaPlayerInSeek = null;
-            mediaPlayerInSeek = players[currentSeekBarIndex];
-            mediaPlayerInSeek.seekTo(playerProgress);
-            mediaPlayerInSeek.start();
+        if (isSeeked && players[currentButtonIndex] != null && playerProgress != -1 && !players[currentButtonIndex].isPlaying()) {
+
+            players[currentButtonIndex].seekTo(playerProgress);
+            players[currentButtonIndex].start();
 
             if (seekHandler == null) {
                 seekHandler = new Handler();
@@ -183,8 +179,8 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
             threadInSeek = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayerInSeek != null && mediaPlayerInSeek.isPlaying()) {
-                        seekbars[currentSeekBarIndex].setProgress(mediaPlayerInSeek.getCurrentPosition());
+                    if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
+                        seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
                         seekHandler.postDelayed(this, 50);
                     }
                 }
