@@ -106,8 +106,14 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
 
         players[currentButtonIndex] = MediaPlayer.create(MiloszActivity.this, mp3toPng[currentButtonIndex]);
 
-        if (seekbars[currentButtonIndex] != null) {
+        if (seekbars[currentButtonIndex] != null && players[currentButtonIndex] != null) {
             seekbars[currentButtonIndex].setMax(players[currentButtonIndex].getDuration());
+            int seekTo =
+                    seekbars[currentButtonIndex].getProgress() != players[currentButtonIndex].getDuration()
+                            && !players[currentButtonIndex].isPlaying()
+                            ? seekbars[currentButtonIndex].getProgress()
+                            : 0;
+            players[currentButtonIndex].seekTo(seekTo);
         }
 
         players[currentButtonIndex].start();
@@ -187,6 +193,8 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
             });
 
             threadInSeek.start();
+        } else {
+            seekbars[currentSeekBarIndex].setProgress(seekBar.getProgress());
         }
     }
 }
