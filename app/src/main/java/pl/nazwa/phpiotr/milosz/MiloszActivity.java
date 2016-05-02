@@ -13,14 +13,11 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
     private final int COUNT = 10;
     private final String TAG = this.getClass().getSimpleName();
     private Thread threadInClick = null;
-    private Thread threadInSeek = null;
     private SeekBar seekbars[] = new SeekBar[COUNT];
     private MediaPlayer players[] = new MediaPlayer[COUNT];
     private Handler clickHandler = null;
-    private Handler seekHandler = null;
     private int currentButtonIndex = -1;
     private int currentSeekBarIndex = -1;
-    private boolean isSeeked = false;
     private int playerProgress = -1;
 
     private int[] mp3toPng = {
@@ -83,13 +80,22 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
 
+        if (currentButtonIndex != -1 && ids[currentButtonIndex] == v.getId()) {
+            if (players[currentButtonIndex] != null) {
+                if (players[currentButtonIndex].isPlaying()) {
+                    players[currentButtonIndex].pause();
+                    return;
+                }
+            }
+        }
+
         if (threadInClick != null) {
             threadInClick.interrupt();
             threadInClick = null;
         }
 
         for (int i = 0; i < ids.length; i++) {
-            if (players[i] != null && players[i].isPlaying()) {
+            if (players[i] != null) {
                 players[i].stop();
                 players[i].reset();
                 players[i].release();
@@ -105,39 +111,38 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         players[currentButtonIndex] = MediaPlayer.create(MiloszActivity.this, mp3toPng[currentButtonIndex]);
-
-        if (seekbars[currentButtonIndex] != null && players[currentButtonIndex] != null) {
-            seekbars[currentButtonIndex].setMax(players[currentButtonIndex].getDuration());
-            int seekTo =
-                    seekbars[currentButtonIndex].getProgress() != players[currentButtonIndex].getDuration()
-                            && !players[currentButtonIndex].isPlaying()
-                            ? seekbars[currentButtonIndex].getProgress()
-                            : 0;
-            players[currentButtonIndex].seekTo(seekTo);
-        }
-
-        players[currentButtonIndex].start();
-
-        clickHandler = new Handler();
-
-        threadInClick = new Thread(new Runnable() {
+        players[currentButtonIndex].setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void run() {
-                if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
-                    seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
-                    clickHandler.postDelayed(this, 50);
-                }
+            public void onPrepared(MediaPlayer mp) {
+                seekbars[currentButtonIndex].setMax(players[currentButtonIndex].getDuration());
+                int seekTo =
+                        seekbars[currentButtonIndex].getProgress() != players[currentButtonIndex].getDuration()
+                                && !players[currentButtonIndex].isPlaying()
+                                ? seekbars[currentButtonIndex].getProgress()
+                                : 0;
+                mp.seekTo(seekTo);
+                mp.start();
+                clickHandler = new Handler();
+
+                threadInClick = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
+                            seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
+                            clickHandler.postDelayed(this, 50);
+                        }
+                    }
+                });
+
+                threadInClick.start();
             }
         });
 
-        threadInClick.start();
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (isSeeked && players[currentSeekBarIndex] != null) {
-            playerProgress = progress;
-        }
+        playerProgress = progress;
     }
 
     @Override
@@ -154,47 +159,28 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        // seek bar of sound being currently played
-        if (players[currentSeekBarIndex] != null && players[currentSeekBarIndex].isPlaying()) {
-            isSeeked = true;
-            players[currentSeekBarIndex].pause();
+        if (players[currentSeekBarIndex] == null) {
             return;
         }
 
-        isSeeked = false;
-
+        if (players[currentSeekBarIndex].isPlaying()) {
+            players[currentSeekBarIndex].pause();
+        }
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
-        if (isSeeked && players[currentButtonIndex] != null && playerProgress != -1 && !players[currentButtonIndex].isPlaying()) {
-
-            players[currentButtonIndex].seekTo(playerProgress);
-            players[currentButtonIndex].start();
-
-            if (seekHandler == null) {
-                seekHandler = new Handler();
-            }
-
-            if (threadInSeek != null) {
-                threadInSeek.interrupt();
-                threadInSeek = null;
-            }
-
-            threadInSeek = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
-                        seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
-                        seekHandler.postDelayed(this, 50);
-                    }
-                }
-            });
-
-            threadInSeek.start();
-        } else {
-            seekbars[currentSeekBarIndex].setProgress(seekBar.getProgress());
+        if (playerProgress == -1) {
+            return;
         }
+
+        if (players[currentSeekBarIndex] != null) {
+            players[currentSeekBarIndex].seekTo(playerProgress);
+        }
+
+        seekbars[currentSeekBarIndex].setProgress(playerProgress);
+
+        playerProgress = -1;
     }
 }
