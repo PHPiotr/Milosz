@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 public class MiloszActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private final int COUNT = 10;
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = String.format("pl.nazwa.phpiotr.milosz.%s", this.getClass().getSimpleName());
     private Thread threadInClick = null;
     private SeekBar seekbars[] = new SeekBar[COUNT];
     private MediaPlayer players[] = new MediaPlayer[COUNT];
@@ -90,7 +90,9 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if (threadInClick != null) {
-            threadInClick.interrupt();
+            if (!threadInClick.isInterrupted()) {
+                threadInClick.interrupt();
+            }
             threadInClick = null;
         }
 
@@ -137,6 +139,12 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
                 threadInClick.start();
             }
         });
+        players[currentButtonIndex].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                seekbars[currentButtonIndex].setProgress(0);
+            }
+        });
 
     }
 
@@ -147,6 +155,10 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
+
+        if (threadInClick != null && !threadInClick.isInterrupted()) {
+            threadInClick.interrupt();
+        }
 
         for (int i = 0; i < seekIds.length; i++) {
             if (seekIds[i] != seekBar.getId()) {
@@ -160,6 +172,8 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if (players[currentSeekBarIndex] == null) {
+            players[currentSeekBarIndex] = MediaPlayer.create(MiloszActivity.this, mp3toPng[currentSeekBarIndex]);
+            seekbars[currentSeekBarIndex].setMax(players[currentSeekBarIndex].getDuration());
             return;
         }
 
@@ -177,6 +191,7 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
 
         if (players[currentSeekBarIndex] != null) {
             players[currentSeekBarIndex].seekTo(playerProgress);
+            players[currentSeekBarIndex] = null;
         }
 
         seekbars[currentSeekBarIndex].setProgress(playerProgress);
