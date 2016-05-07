@@ -113,39 +113,8 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         players[currentButtonIndex] = MediaPlayer.create(MiloszActivity.this, mp3toPng[currentButtonIndex]);
-        players[currentButtonIndex].setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                seekbars[currentButtonIndex].setMax(players[currentButtonIndex].getDuration());
-                int seekTo =
-                        seekbars[currentButtonIndex].getProgress() != players[currentButtonIndex].getDuration()
-                                && !players[currentButtonIndex].isPlaying()
-                                ? seekbars[currentButtonIndex].getProgress()
-                                : 0;
-                mp.seekTo(seekTo);
-                mp.start();
-                clickHandler = new Handler();
-
-                threadInClick = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
-                            seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
-                            clickHandler.postDelayed(this, 50);
-                        }
-                    }
-                });
-
-                threadInClick.start();
-            }
-        });
-        players[currentButtonIndex].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                seekbars[currentButtonIndex].setProgress(0);
-            }
-        });
-
+        onPreparedMedia(players[currentButtonIndex]);
+        onCompletionMedia(players[currentButtonIndex]);
     }
 
     @Override
@@ -197,5 +166,43 @@ public class MiloszActivity extends AppCompatActivity implements View.OnClickLis
         seekbars[currentSeekBarIndex].setProgress(playerProgress);
 
         playerProgress = -1;
+    }
+
+    private void onPreparedMedia(MediaPlayer mediaPlayer) {
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                seekbars[currentButtonIndex].setMax(players[currentButtonIndex].getDuration());
+                int seekTo =
+                        seekbars[currentButtonIndex].getProgress() != players[currentButtonIndex].getDuration()
+                                && !players[currentButtonIndex].isPlaying()
+                                ? seekbars[currentButtonIndex].getProgress()
+                                : 0;
+                mp.seekTo(seekTo);
+                mp.start();
+                clickHandler = new Handler();
+
+                threadInClick = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (players[currentButtonIndex] != null && players[currentButtonIndex].isPlaying()) {
+                            seekbars[currentButtonIndex].setProgress(players[currentButtonIndex].getCurrentPosition());
+                            clickHandler.postDelayed(this, 50);
+                        }
+                    }
+                });
+
+                threadInClick.start();
+            }
+        });
+    }
+
+    private void onCompletionMedia(MediaPlayer mediaPlayer) {
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                seekbars[currentButtonIndex].setProgress(0);
+            }
+        });
     }
 }
